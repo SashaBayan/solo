@@ -57,8 +57,7 @@ var Circle = function(x, y, r, s, d, color){
 };
 
 var createNewCircle = function(color){
-  circles.push(new Circle(50,50,10,5,[0.5,1], color));
-  //mySound.play();
+  circles.push(new Circle(50,50,10,5,[0.5,1], color));  
 }
 
 //Throttle playing of notes in order to reduce lagging from overloading the client with sounds
@@ -116,6 +115,16 @@ $('.pink').on('click', function(){
   pinkNote.play();
 })
 
+
+var board = 
+  d3.selectAll('svg')
+  .attr('height', 500)
+  .attr('width', 500)
+  .style('background-color', 'pink')
+  .style('stroke', 'black')
+  .style('stroke-width', 5)
+
+
 var updateLoop = function() {
   //iterate over the array of circles
   for (var i = 0; i < circles.length; ++i) {
@@ -159,8 +168,6 @@ var updateLoop = function() {
     .append('circle')
 };
 
-d3.selectAll('svg')
-  .style('background-color', 'pink')
 
 updateLoop();
 setInterval(updateLoop, 15);

@@ -15,19 +15,19 @@ soundManager.setup({
       url: 'piano/Piano11.mp3'
     });
     redNote = soundManager.createSound({
-      id: 'aSound',
+      id: 'bSound',
       url: 'piano/Piano12.mp3'
     });
     purpleNote = soundManager.createSound({
-      id: 'aSound',
+      id: 'cSound',
       url: 'piano/Piano13.mp3'
     });
     greenNote = soundManager.createSound({
-      id: 'aSound',
+      id: 'dSound',
       url: 'piano/Piano14.mp3'
     });
     pinkNote = soundManager.createSound({
-      id: 'aSound',
+      id: 'eSound',
       url: 'piano/Piano15.mp3'
     });
   },
@@ -65,18 +65,23 @@ var createNewCircle = function(color){
 //NOT VERY DRY... how can you refactor this?
 $('.blue').on('click', function(){
   createNewCircle('blue');
+  blueNote.play();
 })
 $('.red').on('click', function(){
   createNewCircle('red');
+  redNote.play();
 })
 $('.purple').on('click', function(){
   createNewCircle('purple');
+  purpleNote.play();
 })
 $('.green').on('click', function(){
   createNewCircle('green');
+  greenNote.play();
 })
 $('.pink').on('click', function(){
   createNewCircle('pink');
+  pinkNote.play();
 })
 
 var updateLoop = function() {

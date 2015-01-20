@@ -1,7 +1,7 @@
 var xMin = 0;
-var xMax = 500;
+var xMax = 900;
 var yMin = 0;
-var yMax = 500;
+var yMax = 700;
 
 var blueNote, redNote, purpleNote, greenNote, pinkNote;
 
@@ -118,12 +118,11 @@ $('.pink').on('click', function(){
 
 var board = 
   d3.selectAll('svg')
-  .attr('height', 500)
-  .attr('width', 500)
+  .attr('height', yMax)
+  .attr('width', xMax)
   .style('background-color', 'pink')
-  .style('stroke', 'black')
+  .style('stroke', 'red')
   .style('stroke-width', 5)
-
 
 var updateLoop = function() {
   //iterate over the array of circles
@@ -147,9 +146,9 @@ var updateLoop = function() {
         var c2 = circles[j];
         if(c.isColliding(c2)){
           c.direction[0] *= -1;
-          //c.direction[1] *= -1;
-          //c2.direction[0] *= -1;
-          //c2.direction[1] *= -1;
+          c.direction[1] *= -1;
+          c2.direction[0] *= -1;
+          c2.direction[1] *= -1;
          playNote(c.color)
          playNote(c2.color)
         }

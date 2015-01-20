@@ -12,23 +12,23 @@ soundManager.setup({
   onready: function() {
     blueNote = soundManager.createSound({
       id: 'aSound',
-      url: 'piano/01C.mp3'
+      url: 'piano/' + notes['C4'] + '.mp3'
     });
     redNote = soundManager.createSound({
       id: 'bSound',
-      url: 'piano/05E.mp3'
+      url: 'piano/' + notes['D4'] + '.mp3'
     });
     purpleNote = soundManager.createSound({
       id: 'cSound',
-      url: 'piano/08G.mp3'
+      url: 'piano/' + notes['Eb4'] + '.mp3'
     });
     greenNote = soundManager.createSound({
       id: 'dSound',
-      url: 'piano/12B.mp3'
+      url: 'piano/' + notes['G4'] + '.mp3'
     });
     pinkNote = soundManager.createSound({
       id: 'eSound',
-      url: 'piano/22A.mp3'
+      url: 'piano/' + notes['G#4'] + '.mp3'
     });
   },
   ontimeout: function() {
@@ -60,8 +60,37 @@ var createNewCircle = function(color){
   circles.push(new Circle(50,50,10,5,[0.5,1], color));  
 }
 
+var notes = {
+  "C4": "01C",
+  "C#4": "02Csharp",
+  "D4": "03D",
+  "Eb4": "04Eflat",
+  "E4": "05E",
+  "F4": "06F",
+  "F#4": "07Fsharp",
+  "G4": "08G",
+  "G#4": "09Gsharp",
+  "A4":"10A",
+  "Bb4":"11Bflat",
+  "B4":"12B",
+  "C5":"13C",
+  "C#5":"14Csharp",
+  "D5":"15D",
+  "Eb5":"16Eflat",
+  "E5":"17E",
+  "F5":"18F",
+  "F#5":"19Fsharp",
+  "G5":"20G",
+  "G#5":"21Gsharp",
+  "A5":"22A",
+  "Bb5":"23Bflat",
+  "B5":"24B",
+  "C6":"25C"
+}
+
 //Throttle playing of notes in order to reduce lagging from overloading the client with sounds
 //setTimeout used to deal with asynchronous loading of sounds, which happen after the rest of code runs
+
 
 var playBlue, playRed, playPurple, playGreen, playPink;
 

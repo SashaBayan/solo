@@ -1,42 +1,5 @@
-var xMin = 0;
-var xMax = 900;
-var yMin = 0;
-var yMax = 700;
 
 var blueNote, redNote, purpleNote, greenNote, pinkNote;
-
-
-//Create All Your Available Notes
-soundManager.setup({
-  url: '/path/to/swf-files/',
-  onready: function() {
-    blueNote = soundManager.createSound({
-      id: 'root',
-      url: 'piano/' + notes['C4'] + '.mp3'
-    });
-    redNote = soundManager.createSound({
-      id: 'third',
-      url: 'piano/' + notes['D4'] + '.mp3'
-    });
-    purpleNote = soundManager.createSound({
-      id: 'fifth',
-      url: 'piano/' + notes['Eb4'] + '.mp3'
-    });
-    greenNote = soundManager.createSound({
-      id: 'seventh',
-      url: 'piano/' + notes['G4'] + '.mp3'
-    });
-    pinkNote = soundManager.createSound({
-      id: 'extension',
-      url: 'piano/' + notes['G#4'] + '.mp3'
-    });
-  },
-  ontimeout: function() {
-    console.log('TIMEOUT!')
-  }
-})
-
-
 
 var notes = {
   "C4": "01C",
@@ -75,6 +38,54 @@ var pitchCollections = {
   "minor_major7": ['C4','Eb4','F#4','B4','Eb5'],
   "whole_tone": ['C4','D4','E4','F#4','G#5']
 }
+
+var setPitches = function(pitchCollection){
+  soundManager.setup({
+    url: '/path/to/swf-files/',
+    onready: function() {
+      blueNote = soundManager.createSound({
+        id: 'root',
+        url: 'piano/' + notes[pitchCollection[0]] + '.mp3'
+      });
+      redNote = soundManager.createSound({
+        id: 'third',
+        url: 'piano/' + notes[pitchCollection[1]] + '.mp3'
+      });
+      purpleNote = soundManager.createSound({
+        id: 'fifth',
+        url: 'piano/' + notes[pitchCollection[2]] + '.mp3'
+      });
+      greenNote = soundManager.createSound({
+        id: 'seventh',
+        url: 'piano/' + notes[pitchCollection[3]] + '.mp3'
+      });
+      pinkNote = soundManager.createSound({
+        id: 'extension',
+        url: 'piano/' + notes[pitchCollection[4]] + '.mp3'
+      });
+    },
+    ontimeout: function() {
+      console.log('TIMEOUT!')
+    }
+  });
+}
+
+var destorySounds = function(){
+  soundManager.destroySound('root');
+  soundManager.destroySound('third');
+  soundManager.destroySound('fifth');
+  soundManager.destroySound('seventh');
+  soundManager.destroySound('extension');
+}
+
+$('.changeCollection').on('click', function(){
+  destorySounds();
+  setPitches(pitchCollections.minor9)
+})
+$('.changeBack').on('click', function(){
+  destorySounds();
+  setPitches(pitchCollections.major9)
+})
 
 //Throttle playing of notes in order to reduce lagging from overloading the client with sounds
 //setTimeout used to deal with asynchronous loading of sounds, which happen after the rest of code runs
@@ -131,6 +142,10 @@ $('.pink').on('click', function(){
   pinkNote.play();
 })
 
+var xMin = 0;
+var xMax = 900;
+var yMin = 0;
+var yMax = 700;
 
 var board = 
   d3.selectAll('svg')

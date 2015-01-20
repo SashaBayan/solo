@@ -34,10 +34,11 @@ var pitchCollections = {
   "major9": ['C4','E4','G4','B4','D5'],
   "minor9": ['C4','Eb4','G4','Bb4','D5'],
   "half_dim": ['C4','Eb4','F#4','Bb4','D5'],
-  "fully_dim": ['C4','Eb4','F#4','A#4','Eb5'],
+  "fully_dim": ['C4','Eb4','F#4','A4','Eb5'],
   "minor_major7": ['C4','Eb4','F#4','B4','Eb5'],
   "whole_tone": ['C4','D4','E4','F#4','G#5']
 }
+var chordCollections = ['major9', 'minor9', 'half_dim', 'fully_dim', 'minor_major7', 'whole_tone']
 
 var setPitches = function(pitchCollection){
   soundManager.setup({
@@ -70,24 +71,28 @@ var setPitches = function(pitchCollection){
   });
 }
 
+
 //Pitches default to a the major set
 setPitches(pitchCollections.major9)
 
-var destorySounds = function(){
-  soundManager.destroySound('root');
-  soundManager.destroySound('third');
-  soundManager.destroySound('fifth');
-  soundManager.destroySound('seventh');
-  soundManager.destroySound('extension');
+var chordNotes = ['root', 'third', 'fifth', 'seventh', 'extension']
+var destroySounds = function(chordNotes){
+  console.log(chordNotes.length)
+  for (var i = 0; i < chordNotes.length; i++) {
+    soundManager.destroySound(chordNotes[i]) //http://www.schillmania.com/projects/soundmanager2/doc/
+  };
 }
 
-$('.changeCollection').on('click', function(){
-  destorySounds();
-  setPitches(pitchCollections.minor9)
-})
-$('.changeBack').on('click', function(){
-  destorySounds();
-  setPitches(pitchCollections.major9)
+var currentChordCollection = 0;
+$('.nextCollection').on('click', function(){
+  destroySounds(chordNotes);
+  if(currentChordCollection > chordCollections.length - 1){
+    currentChordCollection = 0
+  } else {
+    currentChordCollection += 1;
+  }
+  var currentPitchCollection = chordCollections[currentChordCollection]
+  setPitches(pitchCollections[currentPitchCollection])
 })
 
 //Throttle playing of notes in order to reduce lagging from overloading the client with sounds

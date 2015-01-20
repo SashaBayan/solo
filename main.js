@@ -11,23 +11,23 @@ soundManager.setup({
   url: '/path/to/swf-files/',
   onready: function() {
     blueNote = soundManager.createSound({
-      id: 'aSound',
+      id: 'root',
       url: 'piano/' + notes['C4'] + '.mp3'
     });
     redNote = soundManager.createSound({
-      id: 'bSound',
+      id: 'third',
       url: 'piano/' + notes['D4'] + '.mp3'
     });
     purpleNote = soundManager.createSound({
-      id: 'cSound',
+      id: 'fifth',
       url: 'piano/' + notes['Eb4'] + '.mp3'
     });
     greenNote = soundManager.createSound({
-      id: 'dSound',
+      id: 'seventh',
       url: 'piano/' + notes['G4'] + '.mp3'
     });
     pinkNote = soundManager.createSound({
-      id: 'eSound',
+      id: 'extension',
       url: 'piano/' + notes['G#4'] + '.mp3'
     });
   },
@@ -37,28 +37,6 @@ soundManager.setup({
 })
 
 
-var circles = [];
-var Circle = function(x, y, r, s, d, color){
-  this.x = x;
-  this.y = y;
-  this.radius = r;
-  this.speed = s;
-  this.direction = d;
-  this.color = color;
-  this.getDistance = function(circle){
-    var diffX = Math.abs(this.x - circle.x);
-    var diffY = Math.abs(this.y - circle.y);
-    //hypotenuse
-    return Math.sqrt((diffX * diffX) + (diffY * diffY))
-  }
-  this.isColliding = function(circle){
-    return this.getDistance(circle) < this.radius + circle.radius
-  }
-};
-
-var createNewCircle = function(color){
-  circles.push(new Circle(50,50,10,5,[0.5,1], color));  
-}
 
 var notes = {
   "C4": "01C",
@@ -88,9 +66,18 @@ var notes = {
   "C6":"25C"
 }
 
+var pitchCollections = {
+  //all pitch collections are based on C
+  "major9": ['C4','E4','G4','B4','D5'],
+  "minor9": ['C4','Eb4','G4','Bb4','D5'],
+  "half_dim": ['C4','Eb4','F#4','Bb4','D5'],
+  "fully_dim": ['C4','Eb4','F#4','A#4','Eb5'],
+  "minor_major7": ['C4','Eb4','F#4','B4','Eb5'],
+  "whole_tone": ['C4','D4','E4','F#4','G#5']
+}
+
 //Throttle playing of notes in order to reduce lagging from overloading the client with sounds
 //setTimeout used to deal with asynchronous loading of sounds, which happen after the rest of code runs
-
 
 var playBlue, playRed, playPurple, playGreen, playPink;
 
@@ -152,6 +139,29 @@ var board =
   .style('background-color', 'pink')
   .style('stroke', 'red')
   .style('stroke-width', 5)
+
+var circles = [];
+var Circle = function(x, y, r, s, d, color){
+  this.x = x;
+  this.y = y;
+  this.radius = r;
+  this.speed = s;
+  this.direction = d;
+  this.color = color;
+  this.getDistance = function(circle){
+    var diffX = Math.abs(this.x - circle.x);
+    var diffY = Math.abs(this.y - circle.y);
+    //hypotenuse
+    return Math.sqrt((diffX * diffX) + (diffY * diffY))
+  }
+  this.isColliding = function(circle){
+    return this.getDistance(circle) < this.radius + circle.radius
+  }
+};
+
+var createNewCircle = function(color){
+  circles.push(new Circle(50,50,10,5,[0.5,1], color));  
+}
 
 var updateLoop = function() {
   //iterate over the array of circles

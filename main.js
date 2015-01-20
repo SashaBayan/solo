@@ -86,6 +86,7 @@ var destroySounds = function(chordNotes){
 var currentChordCollection = 0;
 $('.nextCollection').on('click', function(){
   destroySounds(chordNotes);
+  console.log(currentChordCollection) 
   if(currentChordCollection > chordCollections.length - 1){
     currentChordCollection = 0
   } else {
@@ -164,13 +165,16 @@ var board =
   .style('stroke-width', 5)
 
 var circles = [];
-var Circle = function(x, y, r, s, d, color){
+var Circle = function(x, y, r, s, d, color, index){
   this.x = x;
   this.y = y;
   this.radius = r;
   this.speed = s;
   this.direction = d;
   this.color = color;
+  this.index = index;
+  this.collisionCount = 0;
+  this.collisionTimer = 0;
   this.getDistance = function(circle){
     var diffX = Math.abs(this.x - circle.x);
     var diffY = Math.abs(this.y - circle.y);
@@ -183,7 +187,43 @@ var Circle = function(x, y, r, s, d, color){
 };
 
 var createNewCircle = function(color){
-  circles.push(new Circle(50,50,10,5,[0.5,1], color));  
+  circles.push(new Circle(50,50,10,5,[0.5,1], color, circles.length));  
+}
+
+//TODO -- refactor to be more DRY
+//multiplies speed and direction in order to avoid dots from sticking to each other
+var bounceAway = function(c, onlyX, onlyY){
+  if(onlyX){
+    c.direction[0] *= -1;
+    c.x = c.x + (c.speed * c.direction[0] * 2.5);
+  } else if(onlyY){
+    c.direction[1] *= -1;
+    c.y = c.y + (c.speed * c.direction[1] * 2.5);
+  } else {
+    c.direction[0] *= -1;
+    c.x = c.x + (c.speed * c.direction[0] * 2.5);
+    c.direction[1] *= -1;
+    c.y = c.y + (c.speed * c.direction[1] * 2.5);
+  }
+}
+
+var checkDotCollisions = function(c){
+  console.log(updateLoopCounter)
+  //if a dot has collided more than 10 times in 1.5 seconds (10x the updateLoopRate), remove it
+  if(c.collisionCount > 10 && updateLoopCounter > updateLoopRate * 10){
+    console.log(updateLoopCounter)
+    removeDot(c)
+    updateLoopCounter = 0
+  }
+}
+
+var removeDot = function(c){
+  circles.splice(c.index, 1);
+  d3.selectAll('circle').remove();
+}
+
+var increaseCollisionCount = function(c){
+  c.collisionCount++
 }
 
 var updateLoop = function() {
@@ -195,11 +235,13 @@ var updateLoop = function() {
     c.y = c.y + (c.speed * c.direction[1]);
 
     if (c.x > xMax - c.radius|| c.x < xMin + c.radius) {
-      c.direction[0] *= -1;
+      bounceAway(c, true)
+      checkDotCollisions(c);
       playNote(c.color)
     }
     if (c.y > yMax - c.radius|| c.y < yMin + c.radius) {
-      c.direction[1] *= -1;
+      bounceAway(c, null, true)
+      checkDotCollisions(c);
       playNote(c.color)
     }
 
@@ -207,10 +249,8 @@ var updateLoop = function() {
       if(j !== i){
         var c2 = circles[j];
         if(c.isColliding(c2)){
-          c.direction[0] *= -1;
-          c.direction[1] *= -1;
-          c2.direction[0] *= -1;
-          c2.direction[1] *= -1;
+          bounceAway(c)
+          bounceAway(c2)
          playNote(c.color)
          playNote(c2.color)
         }
@@ -231,4 +271,6 @@ var updateLoop = function() {
 
 
 updateLoop();
-setInterval(updateLoop, 15);
+var updateLoopRate = 15; //miliseconds
+var updateLoopCounter = 0; //how many times the update loop has run
+setInterval(updateLoop, updateLoopRate);

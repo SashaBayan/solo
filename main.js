@@ -12,23 +12,23 @@ soundManager.setup({
   onready: function() {
     blueNote = soundManager.createSound({
       id: 'aSound',
-      url: 'piano/Piano11.mp3'
+      url: 'piano/01C.mp3'
     });
     redNote = soundManager.createSound({
       id: 'bSound',
-      url: 'piano/Piano12.mp3'
+      url: 'piano/04E.mp3'
     });
     purpleNote = soundManager.createSound({
       id: 'cSound',
-      url: 'piano/Piano13.mp3'
+      url: 'piano/08G.mp3'
     });
     greenNote = soundManager.createSound({
       id: 'dSound',
-      url: 'piano/Piano14.mp3'
+      url: 'piano/12B.mp3'
     });
     pinkNote = soundManager.createSound({
       id: 'eSound',
-      url: 'piano/Piano15.mp3'
+      url: 'piano/22A.mp3'
     });
   },
   ontimeout: function() {
@@ -43,7 +43,7 @@ var Circle = function(x, y, r, s, d, color){
   this.radius = r;
   this.speed = s;
   this.direction = d;
-  this.fill = color;
+  this.color = color;
   this.getDistance = function(circle){
     var diffX = Math.abs(this.x - circle.x);
     var diffY = Math.abs(this.y - circle.y);
@@ -60,6 +60,23 @@ var createNewCircle = function(color){
   //mySound.play();
 }
 
+var playNote = function(color){
+  if(color === 'blue'){
+    blueNote.play();
+  }
+  else if(color === 'red'){
+    redNote.play();
+  }
+  else if(color === 'purple'){
+    purpleNote.play();
+  }
+  else if(color === 'green'){
+    greenNote.play();
+  }
+  else if(color === 'pink'){
+    pinkNote.play();
+  }
+}
 
 //Create new Dot on click of dot button
 //NOT VERY DRY... how can you refactor this?
@@ -94,11 +111,11 @@ var updateLoop = function() {
 
     if (c.x > xMax - c.radius|| c.x < xMin + c.radius) {
       c.direction[0] *= -1;
-      //mySound.play();
+      playNote(c.color)
     }
     if (c.y > yMax - c.radius|| c.y < yMin + c.radius) {
       c.direction[1] *= -1;
-      //mySound.play();
+      playNote(c.color)
     }
 
     for (var j = 0; j < circles.length; j++) {
@@ -109,7 +126,8 @@ var updateLoop = function() {
           //c.direction[1] *= -1;
           //c2.direction[0] *= -1;
           //c2.direction[1] *= -1;
-         //mySound.play()
+         playNote(c.color)
+         playNote(c2.color)
         }
       }
     };
@@ -119,7 +137,7 @@ var updateLoop = function() {
     .attr('r', function(d){return d.radius})
     .attr('cx', function(d){return d.x})
     .attr('cy', function(d){return d.y})
-    .style('fill', function(d){return d.fill})
+    .style('fill', function(d){return d.color})
     .style('stroke', 'black')
     .style('stroke-width', 3)
     .enter()

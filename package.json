@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "underscore": "^1.0.0",
-    "jquery": "^1.0.0"
+    "jquery": "^1.0.0",
+    "express": "^4.10.4"
   }
 }

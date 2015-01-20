@@ -3,16 +3,33 @@ var xMax = 500;
 var yMin = 0;
 var yMax = 500;
 
-var mySound;
+var blueNote, redNote, purpleNote, greenNote, pinkNote;
 
+
+//Create All Your Available Notes
 soundManager.setup({
   url: '/path/to/swf-files/',
   onready: function() {
-    mySound = soundManager.createSound({
+    redNote = soundManager.createSound({
       id: 'aSound',
-      url: 'click.wav'
+      url: 'piano/Piano11.mp3'
     });
-    mySound.play();
+    redNote = soundManager.createSound({
+      id: 'aSound',
+      url: 'piano/Piano12.mp3'
+    });
+    redNote = soundManager.createSound({
+      id: 'aSound',
+      url: 'piano/Piano13.mp3'
+    });
+    redNote = soundManager.createSound({
+      id: 'aSound',
+      url: 'piano/Piano14.mp3'
+    });
+    redNote = soundManager.createSound({
+      id: 'aSound',
+      url: 'piano/Piano15.mp3'
+    });
   },
   ontimeout: function() {
     console.log('TIMEOUT!')
@@ -85,6 +102,8 @@ var updateLoop = function() {
     .attr('r', function(d){return d.radius})
     .attr('cx', function(d){return d.x})
     .attr('cy', function(d){return d.y})
+    // .style('stroke', 'green')
+    // .style('stroke-width', 10)
     .enter()
     .append('circle')
 };

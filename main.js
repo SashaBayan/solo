@@ -16,7 +16,7 @@ soundManager.setup({
     });
     redNote = soundManager.createSound({
       id: 'bSound',
-      url: 'piano/04E.mp3'
+      url: 'piano/05E.mp3'
     });
     purpleNote = soundManager.createSound({
       id: 'cSound',
@@ -35,6 +35,7 @@ soundManager.setup({
     console.log('TIMEOUT!')
   }
 })
+
 
 var circles = [];
 var Circle = function(x, y, r, s, d, color){
@@ -60,21 +61,35 @@ var createNewCircle = function(color){
   //mySound.play();
 }
 
+//Throttle playing of notes in order to reduce lagging from overloading the client with sounds
+//setTimeout used to deal with asynchronous loading of sounds, which happen after the rest of code runs
+
+var playBlue, playRed, playPurple, playGreen, playPink;
+
+setTimeout(function(){
+  var throttleTime = 100
+  playBlue = _.throttle(blueNote.play, throttleTime);
+  playRed = _.throttle(redNote.play, throttleTime)
+  playPurple = _.throttle(purpleNote.play, throttleTime)
+  playGreen = _.throttle(greenNote.play, throttleTime)
+  playPink = _.throttle(pinkNote.play, throttleTime)
+}, 100)
+
 var playNote = function(color){
   if(color === 'blue'){
-    blueNote.play();
+    playBlue();
   }
   else if(color === 'red'){
-    redNote.play();
+    playRed();
   }
   else if(color === 'purple'){
-    purpleNote.play();
+    playPurple();
   }
   else if(color === 'green'){
-    greenNote.play();
+    playGreen();
   }
   else if(color === 'pink'){
-    pinkNote.play();
+    playPink();
   }
 }
 

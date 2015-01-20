@@ -208,12 +208,27 @@ var bounceAway = function(c, onlyX, onlyY){
 }
 
 var checkDotCollisions = function(c){
-  console.log(updateLoopCounter)
-  //if a dot has collided more than 10 times in 1.5 seconds (10x the updateLoopRate), remove it
+  //if a dot has collided more than 10 times in 1.5 seconds (1000x the updateLoopRate), remove it
   if(c.collisionCount > 10 && updateLoopCounter > updateLoopRate * 10){
     console.log(updateLoopCounter)
     removeDot(c)
     updateLoopCounter = 0
+  } else{
+    c.collisionCount = 0;
+  }
+}
+
+var checkIfTooFarOutOfBounds = function(c, x, y){
+  if(x){
+    //if beyond the boundaries, where dots typically get stuck and perpetually bounce
+    //currently set to remove when half dot's radius is beyond the borders
+    if(c.x > xMax || c.x < xMin){
+      removeDot(c);
+    }
+  } else if (y){
+    if(c.y > yMax || c.y < yMin){
+      removeDot(c);
+    }
   }
 }
 
@@ -223,7 +238,7 @@ var removeDot = function(c){
 }
 
 var increaseCollisionCount = function(c){
-  c.collisionCount++
+  c.collisionCount++;
 }
 
 var updateLoop = function() {
@@ -234,14 +249,18 @@ var updateLoop = function() {
     c.x = c.x + (c.speed * c.direction[0]);
     c.y = c.y + (c.speed * c.direction[1]);
 
+    checkIfTooFarOutOfBounds(c, true, true);
+
     if (c.x > xMax - c.radius|| c.x < xMin + c.radius) {
       bounceAway(c, true)
-      checkDotCollisions(c);
+      increaseCollisionCount(c)
+      //checkDotCollisions(c);
       playNote(c.color)
     }
     if (c.y > yMax - c.radius|| c.y < yMin + c.radius) {
       bounceAway(c, null, true)
-      checkDotCollisions(c);
+      increaseCollisionCount(c)
+      //checkDotCollisions(c);
       playNote(c.color)
     }
 
@@ -267,8 +286,15 @@ var updateLoop = function() {
     .style('stroke-width', 3)
     .enter()
     .append('circle')
+
+    updateLoopCounter++;
 };
 
+var fling = function(){
+  d3.behavior.drag(){
+    
+  }
+}
 
 updateLoop();
 var updateLoopRate = 15; //miliseconds

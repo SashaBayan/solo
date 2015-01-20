@@ -10,7 +10,7 @@ var blueNote, redNote, purpleNote, greenNote, pinkNote;
 soundManager.setup({
   url: '/path/to/swf-files/',
   onready: function() {
-    redNote = soundManager.createSound({
+    blueNote = soundManager.createSound({
       id: 'aSound',
       url: 'piano/Piano11.mp3'
     });
@@ -18,15 +18,15 @@ soundManager.setup({
       id: 'aSound',
       url: 'piano/Piano12.mp3'
     });
-    redNote = soundManager.createSound({
+    purpleNote = soundManager.createSound({
       id: 'aSound',
       url: 'piano/Piano13.mp3'
     });
-    redNote = soundManager.createSound({
+    greenNote = soundManager.createSound({
       id: 'aSound',
       url: 'piano/Piano14.mp3'
     });
-    redNote = soundManager.createSound({
+    pinkNote = soundManager.createSound({
       id: 'aSound',
       url: 'piano/Piano15.mp3'
     });
@@ -37,12 +37,13 @@ soundManager.setup({
 })
 
 var circles = [];
-var Circle = function(x, y, r, s, d){
+var Circle = function(x, y, r, s, d, color){
   this.x = x;
   this.y = y;
-  this.radius = r
-  this.speed = s
-  this.direction = d
+  this.radius = r;
+  this.speed = s;
+  this.direction = d;
+  this.fill = color;
   this.getDistance = function(circle){
     var diffX = Math.abs(this.x - circle.x);
     var diffY = Math.abs(this.y - circle.y);
@@ -54,18 +55,29 @@ var Circle = function(x, y, r, s, d){
   }
 };
 
-var createNewCircle = function(){
-  circles.push(new Circle(50,50,10,5,[0.5,1]));
-  mySound.play();
+var createNewCircle = function(color){
+  circles.push(new Circle(50,50,10,5,[0.5,1], color));
+  //mySound.play();
 }
 
 
 //Create new Dot on click of dot button
-$('button').on('click', function(){
-  createNewCircle();
+//NOT VERY DRY... how can you refactor this?
+$('.blue').on('click', function(){
+  createNewCircle('blue');
 })
-
-circles.push(new Circle(50,50,10,5,[0.5,1]));
+$('.red').on('click', function(){
+  createNewCircle('red');
+})
+$('.purple').on('click', function(){
+  createNewCircle('purple');
+})
+$('.green').on('click', function(){
+  createNewCircle('green');
+})
+$('.pink').on('click', function(){
+  createNewCircle('pink');
+})
 
 var updateLoop = function() {
   //iterate over the array of circles
@@ -77,11 +89,11 @@ var updateLoop = function() {
 
     if (c.x > xMax - c.radius|| c.x < xMin + c.radius) {
       c.direction[0] *= -1;
-      mySound.play();
+      //mySound.play();
     }
     if (c.y > yMax - c.radius|| c.y < yMin + c.radius) {
       c.direction[1] *= -1;
-      mySound.play();
+      //mySound.play();
     }
 
     for (var j = 0; j < circles.length; j++) {
@@ -92,7 +104,7 @@ var updateLoop = function() {
           //c.direction[1] *= -1;
           //c2.direction[0] *= -1;
           //c2.direction[1] *= -1;
-          mySound.play()
+         //mySound.play()
         }
       }
     };
@@ -102,8 +114,9 @@ var updateLoop = function() {
     .attr('r', function(d){return d.radius})
     .attr('cx', function(d){return d.x})
     .attr('cy', function(d){return d.y})
-    // .style('stroke', 'green')
-    // .style('stroke-width', 10)
+    .style('fill', function(d){return d.fill})
+    .style('stroke', 'black')
+    .style('stroke-width', 3)
     .enter()
     .append('circle')
 };

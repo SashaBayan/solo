@@ -70,6 +70,9 @@ var setPitches = function(pitchCollection){
   });
 }
 
+//Pitches default to a the major set
+setPitches(pitchCollections.major9)
+
 var destorySounds = function(){
   soundManager.destroySound('root');
   soundManager.destroySound('third');
@@ -92,7 +95,7 @@ $('.changeBack').on('click', function(){
 
 var playBlue, playRed, playPurple, playGreen, playPink;
 
-setTimeout(function(){
+setInterval(function(){
   var throttleTime = 100
   playBlue = _.throttle(blueNote.play, throttleTime);
   playRed = _.throttle(redNote.play, throttleTime)

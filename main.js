@@ -3,6 +3,22 @@ var xMax = 500;
 var yMin = 0;
 var yMax = 500;
 
+var mySound;
+
+soundManager.setup({
+  url: '/path/to/swf-files/',
+  onready: function() {
+    mySound = soundManager.createSound({
+      id: 'aSound',
+      url: 'click.wav'
+    });
+    mySound.play();
+  },
+  ontimeout: function() {
+    console.log('TIMEOUT!')
+  }
+})
+
 var circles = [];
 var Circle = function(x, y, r, s, d){
   this.x = x;
@@ -23,6 +39,7 @@ var Circle = function(x, y, r, s, d){
 
 var createNewCircle = function(){
   circles.push(new Circle(50,50,10,5,[0.5,1]));
+  mySound.play();
 }
 
 
@@ -41,8 +58,14 @@ var updateLoop = function() {
     c.x = c.x + (c.speed * c.direction[0]);
     c.y = c.y + (c.speed * c.direction[1]);
 
-    if (c.x > xMax - c.radius|| c.x < xMin + c.radius) c.direction[0] *= -1;
-    if (c.y > yMax - c.radius|| c.y < yMin + c.radius) c.direction[1] *= -1;
+    if (c.x > xMax - c.radius|| c.x < xMin + c.radius) {
+      c.direction[0] *= -1;
+      mySound.play();
+    }
+    if (c.y > yMax - c.radius|| c.y < yMin + c.radius) {
+      c.direction[1] *= -1;
+      mySound.play();
+    }
 
     for (var j = 0; j < circles.length; j++) {
       if(j !== i){
@@ -52,6 +75,7 @@ var updateLoop = function() {
           //c.direction[1] *= -1;
           //c2.direction[0] *= -1;
           //c2.direction[1] *= -1;
+          mySound.play()
         }
       }
     };

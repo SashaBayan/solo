@@ -71,6 +71,15 @@ var setPitches = function(pitchCollection){
   });
 }
 
+var removeAllDots = function(){
+  circles = [];
+  d3.selectAll('circle')
+    .remove()
+}
+
+$('.startOver').on('click', function(){
+  removeAllDots();
+})
 
 //Pitches default to a the major set
 setPitches(pitchCollections.major9)

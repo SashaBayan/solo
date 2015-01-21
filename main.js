@@ -35,7 +35,7 @@ var pitchCollections = {
   "ii": ['D4','F4','A4','C5','E5'],
   "V": ['G4','B4','D5','F5','A5'],
   "vi": ['G#4','C5','Eb5','F#5','G#5'],
-  "VII": ['Bb4','D5','F5','G#5','C5'],
+  "VII": ['Bb4','D5','F5','G#5','Bb5'],
   "I": ['C4','E4','G4','C5','C6']
 }
 var chordCollections = ['major9', 'minor9', 'major9', 'ii', 'V', 'vi', 'VII', 'I']

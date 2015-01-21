@@ -1,4 +1,3 @@
-
 var blueNote, redNote, purpleNote, greenNote, pinkNote;
 
 var notes = {
@@ -150,6 +149,9 @@ $('.pink').on('click', function(){
   createNewCircle('pink');
   pinkNote.play();
 })
+$('.user').on('click', function(){
+  createUserCircle();
+})
 
 var xMin = 0;
 var xMax = 900;
@@ -165,16 +167,17 @@ var board =
   .style('stroke-width', 5)
 
 var circles = [];
-var Circle = function(x, y, r, s, d, color, index){
+var Circle = function(x, y, r, s, d, color, index, isUser){
   this.x = x;
   this.y = y;
   this.radius = r;
   this.speed = s;
-  this.direction = d;
+  this.direction = d; //takes an array of x and y coordinates for vector
   this.color = color;
   this.index = index;
   this.collisionCount = 0;
   this.collisionTimer = 0;
+  this.isUser = isUser;
   this.getDistance = function(circle){
     var diffX = Math.abs(this.x - circle.x);
     var diffY = Math.abs(this.y - circle.y);
@@ -187,8 +190,12 @@ var Circle = function(x, y, r, s, d, color, index){
 };
 
 var createNewCircle = function(color){
-  circles.push(new Circle(50,50,10,5,[0.5,1], color, circles.length));  
+  circles.push(new Circle(50,50,10,5,[0.5,1], color, circles.length, false));  
 }
+
+var createUserCircle = function(){
+  circles.push(new Circle(100,100,20,1,[0,0], 'red', circles.length, true))
+} 
 
 //TODO -- refactor to be more DRY
 //multiplies speed and direction in order to avoid dots from sticking to each other
@@ -241,6 +248,13 @@ var increaseCollisionCount = function(c){
   c.collisionCount++;
 }
 
+var drag = d3.behavior.drag()
+    .on('drag', function(d,i) {
+      c = d3.select(this);
+      c.data()[0]['x'] = d3.event.x
+      c.data()[0]['y'] = d3.event.y
+    })
+
 var updateLoop = function() {
   //iterate over the array of circles
   for (var i = 0; i < circles.length; ++i) {
@@ -286,15 +300,37 @@ var updateLoop = function() {
     .style('stroke-width', 3)
     .enter()
     .append('circle')
+    .call(drag)
+    /*.on('mousemove', function(c){
+      //passes in individual circle to fling function
+      fling(d3.select(this))
+    });*/
 
     updateLoopCounter++;
 };
 
-var fling = function(){
-  d3.behavior.drag(){
-    
-  }
+var fling = function(c){
+  var timer = 0;
+  //set up a timer between dragstart and dragend
+  //find the distance between dragstart and dragend
+  //do some math with the time and distance to determine
+  //how to change the speed of the circle
+/*  setInterval(function(){
+    timer++;
+  }, 100)
+  d3.behavior.drag()
+    .on('drag', function(d, i){*/
+
+      c.data()[0]['x'] = d3.event.pageX
+      c.data()[0]['y'] = d3.event.pageY
+      //c.data('y', d3.event.pageY)
+    // })
 }
+
+
+// setTimeout(circles[0].call(dragmove);
+
+//player.call(dragmove);
 
 updateLoop();
 var updateLoopRate = 15; //miliseconds

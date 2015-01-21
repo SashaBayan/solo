@@ -32,12 +32,12 @@ var pitchCollections = {
   //all pitch collections are based on C
   "major9": ['C4','E4','G4','B4','D5'],
   "minor9": ['C4','Eb4','G4','Bb4','D5'],
-  "half_dim": ['C4','Eb4','F#4','Bb4','D5'],
-  "fully_dim": ['C4','Eb4','F#4','A4','Eb5'],
-  "minor_major7": ['C4','Eb4','F#4','B4','Eb5'],
-  "whole_tone": ['C4','D4','E4','F#4','G#5']
+  "ii": ['D4','F4','A4','C5','E5'],
+  "V": ['G4','B4','D5','F5','A5'],
+  "vi": ['G#4','C5','Eb5','F#5','G#5'],
+  "VII": ['Bb4','D5','F5','G#5','C5']
 }
-var chordCollections = ['major9', 'minor9', 'half_dim', 'fully_dim', 'minor_major7', 'whole_tone']
+var chordCollections = ['major9', 'minor9', 'major9', 'ii', 'V', 'vi', 'VII', 'major9']
 
 var setPitches = function(pitchCollection){
   soundManager.setup({

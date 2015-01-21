@@ -193,8 +193,18 @@ var createNewCircle = function(color){
   circles.push(new Circle(50,50,10,5,[0.5,1], color, circles.length, false));  
 }
 
+var colors = ['blue', 'red', 'purple', 'green', 'pink']
+
+var randomColor = function(){
+  Math.floor(colors[Math.radom * colors.length])
+}
+
+var randomPosition = function(){
+
+}
+
 var createUserCircle = function(){
-  circles.push(new Circle(100,100,20,1,[0,0], 'red', circles.length, true))
+  circles.push(new Circle(100,100,20,1,[0,0], randomColor(), circles.length, true))
 } 
 
 //TODO -- refactor to be more DRY

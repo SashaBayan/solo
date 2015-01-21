@@ -196,7 +196,7 @@ var createNewCircle = function(color){
 var colors = ['blue', 'red', 'purple', 'green', 'pink']
 
 var randomColor = function(){
-  Math.floor(colors[Math.radom * colors.length])
+  Math.floor(colors[Math.random * colors.length])
 }
 
 var randomPosition = function(){
